@@ -4,7 +4,7 @@ var assert = require('assert'),
 describe('utils/acyclicTraversal', function() {
 
   describe('schema', function() {
-    
+
     var schema = {
       user: {
         attributes: {
