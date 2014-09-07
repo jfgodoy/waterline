@@ -21,6 +21,23 @@ describe('instance methods', function() {
       before(function() {
         var fixture = belongsToFixture();
 
+        var findOneFn = function(container) {
+
+          var obj = function(criteria) {
+            return this;
+          };
+
+          obj.prototype.exec = function(cb) {
+            cb(null, [new model(container.update[0].values)]);
+          };
+
+          obj.prototype.populate = function() { return this; };
+
+          return function(criteria) {
+            return new obj(criteria);
+          };
+        };
+
         // Mock Collection Update Method
         var updateFn = function(container) {
           return function(criteria, values, cb) {
@@ -45,6 +62,7 @@ describe('instance methods', function() {
 
         // Add Collection Methods to all fixture collections
         fixture.update = updateFn(foo);
+        fixture.findOne = findOneFn(foo);
         fixture.waterline.collections.foo.update = updateFn(foo);
         fixture.waterline.collections.bar.update = updateFn(bar);
         fixture.waterline.collections.bar.create = createFn(bar);
@@ -66,9 +84,9 @@ describe('instance methods', function() {
         person.save(function(err) {
           assert(bar.create.length === 2);
 
-          assert(bar.create[0].values.foo_id);
+          assert(bar.create[0].values.foo);
           assert(bar.create[0].values.name);
-          assert(bar.create[1].values.foo_id);
+          assert(bar.create[1].values.foo);
           assert(bar.create[1].values.name);
 
           assert(bar.create[0].values.name === 'foo');
