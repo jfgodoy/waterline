@@ -74,6 +74,7 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [Twitter](https://github.com/balderdashy/sails-twitter)
   - [JSDom](https://github.com/mikermcneil/sails-jsdom)
   - [Neo4j](https://github.com/natgeo/sails-neo4j)
+  - [FoundationDB SQL Layer](https://github.com/FoundationDB/sql-layer-adapter-sails)
 
 ## Collection
 
@@ -289,11 +290,11 @@ User.findOne()
     return [user.id, user.friendsList, comments];
 }).spread(function(userId, friendsList, comments){
     // Promises are awesome!
-}).fail(function(err){
+}).catch(function(err){
     // An error occurred
 })
 ```
-Promises use the [Q library](https://github.com/kriskowal/q), so anything you do after the first `then` call (or `spread`, or `fail`), will be a complete Q promise object. Remember, you must end the query somehow (by calling `then` or one of the other functions) in order to complete the database request.
+Promises use the [Bluebird library](https://github.com/petkaantonov/bluebird), so anything you do after the first `then` call (or `spread`, or `catch`), will be a complete Bluebird promise object. Remember, you must end the query somehow (by calling `then` or one of the other functions) in order to complete the database request.
 
 Each of the following basic methods are available by default on a Collection instance:
 
